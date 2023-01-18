@@ -1,0 +1,79 @@
+.wrapper {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+.inputDiv {
+  display: flex;
+  margin-bottom: 20px;
+}
+input {
+  height: 30px;
+  width: 340px;
+}
+.search {
+  width: 60px;
+}
+table {
+  /* border: none; */
+  background-color: rgb(243, 245, 249);
+  border-spacing: 0;
+  width: 400px;
+  border-radius: 10px;
+  height: 100%;
+}
+thead {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+th {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 16px 15px;
+
+  color: rgb(43, 52, 69);
+}
+tbody {
+  background-color: white;
+  cursor: pointer;
+}
+td {
+  box-sizing: border-box;
+  width: fit-content;
+  border-collapse: collapse;
+  padding: 10px 40px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(43, 52, 69);
+  border-bottom: 1px solid rgb(227, 233, 239);
+  height: 50px;
+}
+
+.Buttons {
+  display: flex;
+  margin-top: 3px;
+  margin-right: 0;
+  margin-left: auto;
+}
+.modal {
+  width: 150px;
+  margin-right: 85px;
+}
+
+.page {
+  margin-right: 20px;
+}
+
+.error {
+  width: 400px;
+  color: red;
+}
