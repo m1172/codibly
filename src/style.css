@@ -5,6 +5,12 @@
   justify-content: center;
 }
 
+@media (max-width: 900px) {
+  .wrapper {
+    margin: 100px 10px 0 10px;
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;

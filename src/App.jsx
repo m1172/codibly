@@ -5,41 +5,52 @@ const App = () => {
     localStorage.getItem('currentPage') || 1
   );
   const [products, setProducts] = useState([]);
-  const [product, setProduct] = useState({});
-  const [modal, setModal] = useState('');
-  const [isOpen, setIsOpen] = useState(true);
-  const [inputValue, setInputValue] = useState('');
-
+  const [isOpen, setIsOpen] = useState(localStorage.getItem('open') || true);
   const [error, setError] = useState('');
+
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('data');
+
+    if (storedData) {
+      setData(JSON.parse(storedData));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('data', JSON.stringify(data));
+  }, [data]);
 
   useEffect(() => {
     if (isOpen) {
       fetch(`https://reqres.in/api/products?page=${currentPage}`)
         .then((response) => response.json())
         .then((response) => {
-          setProducts(response);
+          setProducts(response.data);
         })
         .catch((e) => {
           setError(e);
         });
     }
+
     localStorage.setItem('currentPage', currentPage);
   }, [currentPage]);
-
+  localStorage.setItem('open', isOpen);
   const onChange = (e) => {
     let value = e.target.value;
-    setIsOpen(false);
-    setInputValue(value);
+    setIsOpen('false');
+    setData({ ...data, inputValue: value });
     if (value == '') {
-      setIsOpen(true);
+      setIsOpen('true');
     }
   };
 
   const handleClick = () => {
-    fetch(`https://reqres.in/api/products/${inputValue}`)
+    fetch(`https://reqres.in/api/products/${data.inputValue}`)
       .then((response) => response.json())
       .then((response) => {
-        setProduct(response.data);
+        setData({ ...data, product: response.data });
       })
       .catch((e) => {
         setError(e);
@@ -50,7 +61,7 @@ const App = () => {
     <div className='wrapper'>
       <div className='container'>
         <div className='inputDiv'>
-          <input type='number' onChange={onChange} />
+          <input type='number' onChange={onChange} value={data.inputValue} />
           <button
             className='search'
             onClick={() => {
@@ -68,12 +79,14 @@ const App = () => {
               <th>Year</th>
             </tr>
           </thead>
-          {isOpen ? (
+          {isOpen == 'true' ? (
             <tbody>
-              {products.data?.map((product) => (
+              {products?.map((product) => (
                 <tr
                   key={product.id}
-                  onClick={() => setModal(product.pantone_value)}
+                  onClick={() =>
+                    setData({ ...data, modal: product.pantone_value })
+                  }
                   style={{ backgroundColor: `${product.color}` }}
                 >
                   <td>{product.id}</td>
@@ -84,18 +97,18 @@ const App = () => {
             </tbody>
           ) : (
             <tbody>
-              <tr style={{ backgroundColor: `${product?.color}` }}>
-                <td>{product?.id}</td>
-                <td>{product?.name}</td>
-                <td>{product?.year}</td>
+              <tr style={{ backgroundColor: `${data.product?.color}` }}>
+                <td>{data.product?.id}</td>
+                <td>{data.product?.name}</td>
+                <td>{data.product?.year}</td>
               </tr>
             </tbody>
           )}
         </table>
-        {isOpen ? (
+        {isOpen == 'true' ? (
           <div className='Buttons'>
-            <span className='modal'>Modal: {modal}</span>
-            <span className='page'>page: {products.page}</span>
+            <span className='modal'>Modal: {data.modal}</span>
+            <span className='page'>page: {currentPage}</span>
             <button onClick={() => setCurrentPage(1)}>Prev</button>
             <button onClick={() => setCurrentPage(2)}>Next</button>
           </div>
