@@ -5,7 +5,7 @@ const App = () => {
     localStorage.getItem('currentPage') || 1
   );
   const [products, setProducts] = useState([]);
-  const [isOpen, setIsOpen] = useState(localStorage.getItem('open') || true);
+  const [isOpen, setIsOpen] = useState(localStorage.getItem('open') || 'true');
   const [error, setError] = useState('');
 
   const [data, setData] = useState({});
@@ -37,12 +37,14 @@ const App = () => {
     localStorage.setItem('currentPage', currentPage);
   }, [currentPage]);
   localStorage.setItem('open', isOpen);
+
   const onChange = (e) => {
     let value = e.target.value;
     setIsOpen('false');
     setData({ ...data, inputValue: value });
     if (value == '') {
       setIsOpen('true');
+      setData({ ...data, product: '', inputValue: '' });
     }
   };
 
